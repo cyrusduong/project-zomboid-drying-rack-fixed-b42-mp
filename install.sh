@@ -19,12 +19,7 @@ fi
 echo "Creating directory structure..."
 mkdir -p "$TARGET_DIR"
 
-# 3. Ensure mandatory common folder exists (Workshop uploader requirement)
-echo "Ensuring common folder placeholder exists..."
-mkdir -p "$PROJECT_ROOT/Contents/mods/DryingRackFixedB42MP/common"
-touch "$PROJECT_ROOT/Contents/mods/DryingRackFixedB42MP/common/.gitkeep"
-
-# 4. Copy the Contents folder into the target directory
+# 3. Copy the Contents folder into the target directory
 # This will result in $TARGET_DIR/Contents/mods/...
 echo "Copying mod files..."
 cp -r "$PROJECT_ROOT/Contents" "$TARGET_DIR/"
@@ -33,6 +28,8 @@ cp -r "$PROJECT_ROOT/Contents" "$TARGET_DIR/"
 echo "Cleaning up Contents root..."
 rm -f "$TARGET_DIR/Contents/preview.png"
 find "$TARGET_DIR" -name ".DS_Store" -delete
+find "$TARGET_DIR" -name ".gitkeep" -delete
+find "$TARGET_DIR" -type d -empty -delete
 
 # 5. Copy preview.png, mod.info and workshop.txt to the workshop root
 echo "Copying preview.png, mod.info and workshop.txt to workshop root..."
