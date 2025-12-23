@@ -23,5 +23,5 @@ Full Multiplayer support.
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_ui.png[/img]
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_action.png[/img]
 "
-										"changenote"		"* fix: refine drying rack logic and registry cleanup"
+											"changenote"		"* fix: resolve MP item duplication by removing client-side AddItem,* fix: implement hybrid server-authoritative inventory sync for MP,* docs: add technical synchronization details to README,* fix sync issue (#2),* docs: reorganize README layout with Screenshots section,* docs: fix broken preview image path in README,* chore: commit change log"
 }
