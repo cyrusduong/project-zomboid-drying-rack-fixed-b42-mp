@@ -73,6 +73,10 @@ Build 42 on macOS has difficulty with symlinks.
 - **Trailing Whitespace**: Ensure no trailing whitespace is left in the files.
 - **Spacing**: Follow standard Lua spacing conventions (e.g., space around operators like `x = 1 + 2`).
 
+### Steam Workshop Configuration
+- **VDF Formatting**: The `workshop_build.vdf` file uses Steam's BBCode formatting (e.g., `[b]`, `[i]`, `[url]`). Standard Markdown is **not** supported and will be rendered as literal text on the Workshop page.
+- **Quoting**: Ensure double quotes inside the description are escaped with a backslash (`\"`) if they are part of the VDF string value.
+
 ### Scripting Utilities
 - **./install.sh**: Synchronizes local project files to the Zomboid Workshop directory.
 - **./publish.sh**: Wrapper script that runs `./install.sh` and then uses `steamcmd` to upload the mod to the Steam Workshop.
