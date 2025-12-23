@@ -8,10 +8,10 @@ This document outlines the manual and automated steps for migrating the mod iden
 *   Go to your repository on GitHub.
 *   Click **Settings** (top tab).
 *   In the **General** section, update the **Repository name**.
-*   **New Name**: `project-zomboid-drying-rack-fixed-b42-mp` (or your preferred variant).
+*   **New Name**: `project-zomboid-drying-racks-fixed-b42-mp` (or your preferred variant).
 *   Click **Rename**.
 
-[x] - https://github.com/cyrusduong/project-zomboid-drying-rack-fixed-b42-mp
+[x] - https://github.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp
 
 ### 2. Steam Workshop Title Update
 *   The automated scripts will update the title in the mod files, which usually updates the Workshop entry upon publishing.

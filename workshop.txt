@@ -7,7 +7,7 @@ description=This is a temporary MP-compatible stop-gap until the passive drying 
 description=
 description=Full Multiplayer support.
 description=
-description=[url=https://github.com/cyrusduong/project-zomboid-drying-rack-fixed-b42-mp]GitHub Repository[/url]
+description=[url=https://github.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp]GitHub Repository[/url]
 description=
 description=Note: This is a temporary fix mod intended to restore functionality until the official Build 42 crafting system is fully stabilized.
 tags=Build 42;Animals;Clothing/Armor;Interface;Multiplayer;QoL;WIP
