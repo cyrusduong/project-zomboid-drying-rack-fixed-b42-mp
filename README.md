@@ -1,6 +1,7 @@
 # DryingRacksFixed B42 MP
 
 ![Preview Image](https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/preview.png)
+![Leather Drying Rack UI](https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_ui.png)
 
 A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both **Leather** and **Plants** (Herbs/Tobacco). It adds "Dry Leather" and "Dry Herbs" context menu options directly to world drying racks, allowing you to process wet items into their dried versions.
 
@@ -77,15 +78,19 @@ The mod uses a modular registry to map input items to their dried outputs and re
 ### Type Validation
 This project uses [EmmyLua](https://github.com/EmmyLua) for type safety. We use the `Umbrella` library to provide Project Zomboid API types.
 
-To ensure type safety, it is recommended to use `emmylua_check`:
-```bash
-# Install emmylua_check (requires Rust/Cargo)
-cargo install emmylua_check
+To ensure type safety, use `emmylua_check`. We provide two configurations:
 
-# Run validation from the mod root
-cd Contents/mods/DryingRacksFixedB42MP
-emmylua_check
-```
+1.  **Fast Check** (Recommended for quick logic validation):
+    ```bash
+    emmylua_check --config .emmyrc.fast.json
+    ```
+    *Focuses on mod-internal logic. High performance, no timeouts.*
+
+2.  **Full Check** (Requires the `Umbrella` library):
+    ```bash
+    emmylua_check --config .emmyrc.json
+    ```
+    *Validates against the full Project Zomboid API. May take longer to index.*
 
 ### Running Tests
 The project includes a test suite in `media/lua/tests/DryingRackTests.lua`. You can run these in the Project Zomboid debug console or via a standalone Lua environment that mocks the PZ API.
