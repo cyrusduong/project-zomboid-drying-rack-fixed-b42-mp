@@ -8,7 +8,7 @@
 	"title"		"DryingRacksFixed B42 MP"
 	"description"		"A Project Zomboid Build 42 fix for broken drying rack mechanics (Leather and Plants).
 
-This is a temporary MP-compatible stop-gap until the passive drying UI is finalized by the developers. Adds context menu options to drying racks for processing items with immersive Timed Actions. Supports all vanilla leather types and various herbs/tobacco with strict rack size validation.
+This is a temporary MP-compatible stop-gap until the passive drying UI is finalized by the developers. Adds [b]\"Dry Leather\"[/b] and [b]\"Dry Herbs\"[/b] context menu options to drying racks for processing items. Supports all vanilla leather types and various herbs/tobacco with strict rack size validation.
 
 Full Multiplayer support.
 
@@ -19,5 +19,5 @@ Full Multiplayer support.
 [b]Check out our other mods[/b]
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3626008449][img]https://raw.githubusercontent.com/codyduong/PlumbingFixed/49b9c2933ba5ad714d43670d86f8ad761e03e9f7/preview.png[/img][/url]"
-			"changenote"		"* Enhance publish.sh with automated multi-commit changelog tracking"
+				"changenote"		"* Update documentation to focus on context menu options and remove irrelevant technical jargon,* Update last publish commit tracker and workshop changenote"
 }
