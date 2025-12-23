@@ -8,7 +8,9 @@ STEAM_USERNAME="keyreaper82"
 
 echo "Preparing to publish LeatherDryingRack mod..."
 
-# 1. Sync latest changes to the Workshop directory first
+# 1. Ensure we have the correct files ready for publishing
+# We don't use setup-dev.sh for publishing because it uses symlinks which Steam rejects.
+# We use install.sh which creates a clean, copy-based version for the uploader.
 ./install.sh
 
 # 2. Upload to Steam Workshop

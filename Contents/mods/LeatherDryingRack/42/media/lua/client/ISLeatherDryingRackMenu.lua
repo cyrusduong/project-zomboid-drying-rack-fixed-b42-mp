@@ -169,9 +169,8 @@ function ISLeatherDryingRackMenu.OnFillWorldObjectContextMenu(player, context, w
 			for _, leatherData in ipairs(compatibleLeathers) do
 				local option = subMenu:addOption(
 					"Dry " .. leatherData.item:getDisplayName(),
-					rack,
-					ISLeatherDryingRackMenu.dryLeather,
 					playerObj,
+					ISLeatherDryingRackMenu.dryLeather,
 					leatherData,
 					rack
 				)

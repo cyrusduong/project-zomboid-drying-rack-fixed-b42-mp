@@ -58,11 +58,15 @@ cp -r /path/to/project/Contents ~/Zomboid/Workshop/LeatherDryingRack
 - **Build 42 structure**: Use `42/media/lua/` for Build 42 compatibility
 
 ### Testing Workflow
-1. Edit files in project source (`/path/to/project/`)
-2. Run installation commands to copy to workshop directory
-3. Launch Project Zomboid
-4. Enable mod in mods menu
-5. Test changes in-game
+1. Edit files in project source (`/path/to/project/`).
+2. **Sync Changes**: Run `./install.sh` to update the physical files in `~/Zomboid/Workshop/LeatherDryingRack`.
+3. Launch Project Zomboid.
+4. Enable the mod and test in-game.
+
+### Mod Discovery Mitigation (macOS)
+Build 42 on macOS has difficulty with symlinks.
+- **Use Physical Copies**: Always copy files directly to the target directory via `./install.sh`.
+- **Workshop Path**: The project uses `~/Zomboid/Workshop/LeatherDryingRack` as the active mod location.
 
 ### Code Style & Formatting
 - **Lua Indentation**: Use **Tabs** for indentation in all Lua files to maintain consistency with the project's LSP (lua_ls) settings.
