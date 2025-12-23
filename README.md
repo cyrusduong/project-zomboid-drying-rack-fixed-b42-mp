@@ -186,12 +186,33 @@ To test the mod locally without using Steam Workshop:
 
 This structure ensures compatibility with both manual installation and Steam Workshop requirements.
 
-## Support
+## Steam Workshop Uploading (macOS)
 
-For issues, suggestions, or contributions:
-- [Steam Workshop Comments] (placeholder link)
-- [GitHub Issues] (placeholder link)
+The internal Project Zomboid Workshop uploader can be unreliable on macOS (Result 2 errors). It is recommended to use `steamcmd` for a more stable upload process.
 
-## License
+### 1. Prerequisites
+- Install Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- Install steamcmd: `brew install steamcmd`
 
-This mod is released under the same terms as Project Zomboid modding community standards.
+### 2. Prepare the Mod
+Ensure the latest files are synced to the workshop directory:
+```bash
+./install.sh
+```
+
+### 3. Initial Upload
+Run the following command to create and upload the mod:
+```bash
+steamcmd +login <YOUR_STEAM_USERNAME> +workshop_build_item /Users/cduong/Projects/project-zomboid-mp-craft-leather-build-42/workshop_build.vdf +quit
+```
+*Note: You will be prompted for your password and Steam Guard code.*
+
+### 4. Updating the Mod
+Once uploaded, Steam will assign a `publishedfileid`. 
+1. Open `workshop_build.vdf` in your project root.
+2. Change `"publishedfileid" "0"` to `"publishedfileid" "<YOUR_NEW_ID>"`.
+3. Update `"changenote"` with your changes.
+4. Run the upload command again.
+
+### 5. Troubleshooting
+If you get `ERROR! Failed to update workshop item (Access Denied)`, ensure you are logged into the Steam account that owns the mod and that the mod isn't currently open in the Project Zomboid game.

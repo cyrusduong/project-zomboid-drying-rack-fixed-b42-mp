@@ -1,4 +1,5 @@
 version=1
+id=3629422471
 title=Context Menu Craft Leather Fix - Build 42 MP
 description=A Project Zomboid Build 42 fix for broken leather crafting mechanics.
 description=
@@ -9,5 +10,5 @@ description=
 description=[url=https://github.com/cyrusduong/pz-context-menu-craft-leather-fix]GitHub Repository[/url]
 description=
 description=Note: This is a temporary fix mod intended to restore functionality until the official Build 42 crafting system is fully stabilized.
-tags=Build 42
-visibility=unlisted
+tags=Build 42;Animals;Clothing/Armor;Interface;Multiplayer;QoL;WIP
+visibility=public

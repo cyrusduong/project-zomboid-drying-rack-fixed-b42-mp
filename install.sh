@@ -32,6 +32,7 @@ cp -r "$PROJECT_ROOT/Contents" "$TARGET_DIR/"
 # 4. Clean up Contents folder (only folders allowed here)
 echo "Cleaning up Contents root..."
 rm -f "$TARGET_DIR/Contents/preview.png"
+find "$TARGET_DIR" -name ".DS_Store" -delete
 
 # 5. Copy preview.png, mod.info and workshop.txt to the workshop root
 echo "Copying preview.png, mod.info and workshop.txt to workshop root..."
