@@ -4,27 +4,36 @@
  
  ---@param entity IsoObject
  ---@return string category, string size
- function DryingRackUtils.getRackInfo(entity)
- 	local entityFullType = ""
- 	if entity.getEntity and entity:getEntity() then
- 		local entityObj = entity:getEntity()
- 		if entityObj.getFullType then
- 			entityFullType = entityObj:getFullType()
- 		elseif entityObj.getEntityFullTypeDebug then
- 			entityFullType = entityObj:getEntityFullTypeDebug()
- 		end
- 	end
+function DryingRackUtils.getRackInfo(entity)
+	local entityFullType = ""
+	if entity.getEntity and entity:getEntity() then
+		local entityObj = entity:getEntity()
+		if entityObj.getFullType then
+			entityFullType = entityObj:getFullType()
+		elseif entityObj.getEntityFullTypeDebug then
+			entityFullType = entityObj:getEntityFullTypeDebug()
+		end
+	end
+
+	local name = ""
+	if entity.getName then
+		name = entity:getName() or ""
+	end
+
+	local spriteName = ""
+	if entity.getSprite and entity:getSprite() then
+		local sprite = entity:getSprite()
+		if sprite.getName then
+			spriteName = sprite:getName() or ""
+		end
+	end
+
+	print("[DryingRackUtils.getRackInfo] entityFullType=" .. entityFullType .. ", name=" .. name .. ", spriteName=" .. spriteName)
  
- 	local name = ""
- 	if entity.getName then
- 		name = entity:getName() or ""
- 	end
- 
- 	print("[DryingRackUtils.getRackInfo] entityFullType=" .. entityFullType .. ", name=" .. name)
- 
- 	-- Match on entity types first (most reliable) - normalizing by removing spaces
- 	local typeNormalized = entityFullType:gsub("%s+", "")
- 	local nameNormalized = name:gsub("%s+", "")
+	-- Match on entity types first (most reliable) - normalizing by removing spaces
+	local typeNormalized = entityFullType:gsub("%s+", "")
+	local nameNormalized = name:gsub("%s+", "")
+	local spriteNormalized = spriteName:gsub("%s+", "")
  
  	-- Leather Racks
  	if
@@ -58,20 +67,20 @@
  		return "plant", "large"
  	end
  
- 	-- Fallback: Match on display name prefix (not tile number)
- 	-- Tile numbers (21, 22, 236, etc.) change based on world position,
- 	-- so we only match to prefix that identifies rack type.
- 	--
- 	-- Tile patterns found in console:
- 	-- vegetation_drying_01_236 = Small Plant (herbs)
- 	-- vegetation_drying_01_21, vegetation_drying_01_224 = Large Plant (wheat/barley/rye)
- 	local prefix = ""
- 	if nameNormalized:find("vegetation_drying_01_") then
- 		prefix = nameNormalized:match("vegetation_drying_01_(%d+)")
- 	end
+	-- Fallback: Match on display name prefix (not tile number)
+	-- Tile numbers (21, 22, 236, etc.) change based on world position,
+	-- so we only match to prefix that identifies rack type.
+	--
+	-- Tile patterns:
+	-- Small racks (herbs): 20, 225, 236
+	-- Large racks (wheat/barley/rye): 21-35, 224, 237-244
+	local prefix = ""
+	if nameNormalized:find("vegetation_drying_01_") then
+		prefix = nameNormalized:match("vegetation_drying_01_(%d+)")
+	end
 
- 	print("[DryingRackUtils.getRackInfo] prefix=" .. tostring(prefix))
- 	-- Match based on name patterns first
+	print("[DryingRackUtils.getRackInfo] prefix=" .. tostring(prefix))
+	-- Match based on name patterns first
  	if nameNormalized:find("Simple_Herb_Drying_Rack") then
  		return "plant", "small"
  	elseif nameNormalized:find("Herb_Drying_Rack") then
@@ -80,16 +89,31 @@
  		return "plant", "large"
  	elseif nameNormalized:find("^Drying_Rack:") then
  		return "plant", "large"
- 	elseif nameNormalized:find("Drying_Rack") and nameNormalized:find("vegetation_drying") then
- 		-- Vanilla plant racks: match based on prefix only
- 		if prefix == "236" or prefix == "225" then
- 			return "plant", "small"
- 		else
- 			return "plant", "large"
- 		end
- 	end
- 
- 	return "unknown", "unknown"
+	elseif nameNormalized:find("Drying_Rack") and nameNormalized:find("vegetation_drying") then
+		-- Vanilla plant racks: match based on tile prefix
+		-- Small racks (herbs): 20, 225, 236
+		-- Large racks (wheat/barley/rye): 21-35, 224, 237-244
+		local tileNum = tonumber(prefix)
+		if tileNum and (tileNum == 20 or tileNum == 225 or tileNum == 236) then
+			return "plant", "small"
+		elseif tileNum then
+			return "plant", "large"
+		end
+	end
+
+	-- Match on sprite name for vanilla plant racks (fallback when entity name is empty)
+	if spriteNormalized:find("vegetation_drying_01_") then
+		local spritePrefix = spriteNormalized:match("vegetation_drying_01_(%d+)")
+		print("[DryingRackUtils.getRackInfo] spritePrefix=" .. tostring(spritePrefix))
+		local tileNum = tonumber(spritePrefix)
+		if tileNum and (tileNum == 20 or tileNum == 225 or tileNum == 236) then
+			return "plant", "small"
+		elseif tileNum then
+			return "plant", "large"
+		end
+	end
+
+	return "unknown", "unknown"
  end
  
  ---@param category string
