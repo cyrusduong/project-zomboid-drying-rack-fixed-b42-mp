@@ -38,10 +38,20 @@ end
 function ISDryItemAction:perform()
 	self.item:setJobDelta(0.0)
 
-	-- We cannot store getInventory() in an variable since each method call will invalidate it
-	local added = self.character:getInventory():AddItem(self.outputType)
-	self.character:getInventory():Remove(self.item)
-	sendReplaceItemInContainer(self.character:getInventory(), self.item, added)
+	if isClient() then
+		-- In MP, we send a command to the server to handle the swap authoritatively
+		local args = { itemID = self.item:getID(), outputType = self.outputType }
+		sendClientCommand(self.character, "DryingRack", "dryItem", args)
+		
+		-- We also do a local "optimistic" swap so the UI feels responsive
+		-- Note: The server will sync the "true" state back to us.
+		local added = self.character:getInventory():AddItem(self.outputType)
+		self.character:getInventory():Remove(self.item)
+	else
+		-- In SP, we just do it locally
+		local added = self.character:getInventory():AddItem(self.outputType)
+		self.character:getInventory():Remove(self.item)
+	end
 
 	-- Feedback
 	if self.character:isLocalPlayer() then
