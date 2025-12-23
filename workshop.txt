@@ -1,13 +1,13 @@
 version=1
 id=3629422471
-title=Leather Drying Rack Fix B42
-description=A Project Zomboid Build 42 fix for broken leather crafting mechanics.
+title=DryingRackFixed B42 MP
+description=A Project Zomboid Build 42 fix for broken drying rack mechanics (Leather and Plants).
 description=
-description=Adds context menu options to drying racks for instant processing of wet furred leather into dried leather. Supports all 20 vanilla leather types with proper rack size validation.
+description=This is a temporary MP-compatible stop-gap until the passive drying UI is finalized by the developers. Adds context menu options to drying racks for processing items with immersive Timed Actions. Supports all vanilla leather types and various herbs/tobacco with strict rack size validation.
 description=
-description=Full Multiplayer support for B42.
+description=Full Multiplayer support.
 description=
-description=[url=https://github.com/cyrusduong/pz-context-menu-craft-leather-fix]GitHub Repository[/url]
+description=[url=https://github.com/cyrusduong/project-zomboid-drying-rack-fixed-b42-mp]GitHub Repository[/url]
 description=
 description=Note: This is a temporary fix mod intended to restore functionality until the official Build 42 crafting system is fully stabilized.
 tags=Build 42;Animals;Clothing/Armor;Interface;Multiplayer;QoL;WIP

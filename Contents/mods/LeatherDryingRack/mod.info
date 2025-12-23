@@ -1,8 +1,0 @@
-name=Leather Drying Rack Fix B42
-id=ContextMenuCraftLeather
-description=A Project Zomboid Build 42 fix for broken leather crafting mechanics. Adds context menu options to drying racks for processing wet furred leather into dried leather with immersive Timed Actions. Supports all 20 vanilla leather types with proper rack size validation. Full Multiplayer support for B42.
-author=keyreaper
-poster=preview.png
-icon=preview.png
-tags=Build 42;Crafting;QoL;Multiplayer;Animals;Clothing
-versionMin=42.0

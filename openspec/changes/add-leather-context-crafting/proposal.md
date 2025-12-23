@@ -1,16 +1,17 @@
-# Change: Add Leather Context Menu Crafting
+# Change: Unified Drying Rack Fix (Leather and Plants)
 
 ## Why
-Project Zomboid Build 42 introduced a new crafting UI system that broke existing leather drying rack functionality. Players cannot process leather/hides through vanilla means due to UI recognition issues and broken recipe mechanics. This mod restores leather crafting capability through context menu interactions when players have appropriate materials in inventory.
+Project Zomboid Build 42 introduced a new crafting UI system that broke existing leather and plant drying rack functionality. Players cannot process hides or herbs through vanilla means due to UI recognition issues and broken recipe mechanics. This mod restores drying capability through context menu interactions and immersive Timed Actions, ensuring compatibility with Build 42 Multiplayer.
 
 ## What Changes
-- Add context menu options to drying racks for instant leather crafting
-- Implement inventory scanning to detect leather/hides availability
-- Create instant crafting recipes for leather items (armor, components)
-- Override broken vanilla drying rack functionality with working alternatives
-- Add proper error handling and user feedback
+- Implement a modular registry for Leather and Plant drying mappings.
+- Use a unified Timed Action (`ISDryItemAction`) for all drying tasks with proper animations.
+- Add context menu options to Leather Drying Racks and Herb Drying Racks.
+- Enforce strict size matching (e.g., Medium Leather requires a Medium Rack).
+- Centralize rack detection logic in `DryingRackUtils.lua`.
+- Provide feedback to players for size mismatches.
 
 ## Impact
 - Affected specs: crafting
-- Affected code: Lua scripts, recipe definitions
-- Breaking changes: None (adds new capability without removing vanilla features)
+- Affected code: Lua scripts (client, shared, tests)
+- Breaking changes: Replaces the initial `LeatherDryingRack` implementation with a more robust, extensible architecture (`DryingRackFixedB42MP`).

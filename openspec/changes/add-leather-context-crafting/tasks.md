@@ -1,55 +1,28 @@
 ## 1. Foundation Setup
-- [ ] 1.1 Initialize PZMC template structure
-- [ ] 1.2 Create mod.info file with B42 metadata
-- [ ] 1.3 Set up basic media/ directory structure
-- [ ] 1.4 Verify B42 compatibility requirements
+- [x] 1.1 Initialize project structure (Modular Architecture)
+- [x] 1.2 Create mod.info file with B42 metadata
+- [x] 1.3 Set up media/lua/{client,shared,tests} structure
+- [x] 1.4 Migrate mod identity to DryingRackFixedB42MP
 
-## 2. Core Lua Implementation
-- [ ] 2.1 Create context menu hook for drying rack detection
-- [ ] 2.2 Implement inventory scanning for leather/hides
-- [ ] 2.3 Add drying rack object detection logic
-- [ ] 2.4 Create base Lua script structure
+## 2. Core Implementation
+- [x] 2.1 Implement `DryingRackUtils.lua` for entity detection
+- [x] 2.2 Create unified `ISDryItemAction.lua` Timed Action
+- [x] 2.3 Implement Leather Registry (`DryingRackData_Leather.lua`)
+- [x] 2.4 Implement Plant Registry (`DryingRackData_Plants.lua`)
 
 ## 3. Context Menu Integration
-- [ ] 3.1 Add "Craft Leather" option to drying rack context menu
-- [ ] 3.2 Implement sub-menu for leather items
-- [ ] 3.3 Add icon textures for menu options
-- [ ] 3.4 Handle player proximity validation
+- [x] 3.1 Implement `ISDryingRackMenu_Leather.lua` with size validation
+- [x] 3.2 Implement `ISDryingRackMenu_Plants.lua` for herb racks
+- [x] 3.3 Add "Dry All" functionality for bulk processing
+- [x] 3.4 Handle player proximity and size mismatch feedback
 
-## 4. Crafting Logic Implementation
-- [ ] 4.1 Create instant leather processing recipes
-- [ ] 4.2 Add leather armor crafting recipes
-- [ ] 4.3 Implement leather component crafting
-- [ ] 4.4 Add skill requirement validation (tailoring)
-- [ ] 4.5 Create recipe outcome handling
+## 4. Testing & Validation
+- [x] 4.1 Create `DryingRackTests.lua` for modular logic
+- [x] 4.2 Verify strict size matching for leather
+- [x] 4.3 Verify herb rack detection and plant mapping
+- [ ] 4.4 Perform final in-game MP validation (User Task)
 
-## 5. Recipe Definitions
-- [ ] 5.1 Define leather item recipes in recipes.txt
-- [ ] 5.2 Add new leather armor items if needed
-- [ ] 5.3 Configure material requirements and skill levels
-- [ ] 5.4 Test recipe validation and balance
-
-## 6. Testing & Validation
-- [ ] 6.1 Test clean save loading with mod
-- [ ] 6.2 Verify context menu appears on drying racks
-- [ ] 6.3 Test inventory scanning accuracy
-- [ ] 6.4 Test multiplayer compatibility (B42 MP)
-- [ ] 6.5 Verify crafting recipes work correctly
-
-## 7. Error Handling & Polish
-- [ ] 7.1 Add user feedback for missing materials
-- [ ] 7.2 Handle edge cases (empty inventory, invalid items)
-- [ ] 7.3 Add proper logging for debugging
-- [ ] 7.4 Optimize performance for frequent scanning
-
-## 8. Workshop Preparation
-- [ ] 8.1 Create poster.png for workshop display
-- [ ] 8.2 Write workshop.txt with proper metadata
-- [ ] 8.3 Verify mod load order compatibility
-- [ ] 8.4 Test final mod package installation
-
-## 9. Documentation
-- [ ] 9.1 Create README.md with installation instructions
-- [ ] 9.2 Document mod features and usage
-- [ ] 9.3 Add troubleshooting guide
-- [ ] 9.4 Include credit and license information
+## 5. Documentation & Metadata
+- [x] 5.1 Update README.md with new features and structure
+- [x] 5.2 Update workshop metadata (workshop.txt, workshop_build.vdf)
+- [x] 5.3 Synchronize local installation via `install.sh`

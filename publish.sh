@@ -6,7 +6,7 @@ PROJECT_ROOT="/Users/cduong/Projects/project-zomboid-mp-craft-leather-build-42"
 VDF_PATH="$PROJECT_ROOT/workshop_build.vdf"
 STEAM_USERNAME="keyreaper82"
 
-echo "Preparing to publish LeatherDryingRack mod..."
+echo "Preparing to publish DryingRackFixedB42MP mod..."
 
 # 1. Ensure we have the correct files ready for publishing
 # We don't use setup-dev.sh for publishing because it uses symlinks which Steam rejects.
