@@ -37,21 +37,17 @@ end
 
 function ISDryItemAction:perform()
 	self.item:setJobDelta(0.0)
+	ISBaseTimedAction.perform(self)
+end
 
-	if isClient() then
-		-- In MP, we send a command to the server to handle the swap authoritatively
-		local args = { itemID = self.item:getID(), outputType = self.outputType }
-		sendClientCommand(self.character, "DryingRack", "dryItem", args)
-		
-		-- We only remove the wet item locally for responsiveness.
-		-- We DO NOT AddItem here because the server will do it and sync it back.
-		-- This prevents duplication.
-		self.character:getInventory():Remove(self.item)
-	else
-		-- In SP, we just do it locally
-		local added = self.character:getInventory():AddItem(self.outputType)
-		self.character:getInventory():Remove(self.item)
-	end
+function ISDryItemAction:complete()
+	-- We cannot store getInventory() in an variable since each method call will invalidate it
+	local added = self.character:getInventory():AddItem(self.outputType)
+	self.character:getInventory():Remove(self.item)
+	-- this method is broken
+	-- sendReplaceItemInContainer(self.character:getInventory(), self.item, added)
+	sendRemoveItemFromContainer(self.character:getInventory(), self.item)
+	sendAddItemToContainer(self.character:getInventory(), added)
 
 	-- Feedback
 	if self.character:isLocalPlayer() then
@@ -65,9 +61,6 @@ function ISDryItemAction:perform()
 		print("[ISDryItemAction] perform - halo text: " .. tostring(itemName) .. " dried")
 		HaloTextHelper.addGoodText(self.character, itemName .. " dried")
 	end
-
-	-- Part of the action queue
-	ISBaseTimedAction.perform(self)
 end
 
 --- @param character IsoPlayer
