@@ -42,7 +42,9 @@ The system SHALL accurately detect wet furred leather items in player inventory 
 - **THEN** system detects only wet furred leather types for drying options
 - **AND** supports all 18 wet furred leather variants from vanilla game
 
-#### Supported Wet Leather Types
+#### Supported Plants & Grains
+- **Small Rack (Herbs)**: Tobacco, Basil, Oregano, Rosemary, Sage, Thyme, Mint, Black Sage, Plantain.
+- **Large Rack (Grains)**: Wheat Sheaf, Barley Sheaf, Rye Sheaf, Oats Sheaf, Flax, Grass (to Hay).
 - **Small (11 types)**: RabbitLeather_Fur_Tan_Wet, RabbitLeather_Grey_Fur_Tan_Wet, PigletLeather_Landrace_Fur_Tan_Wet, PigletLeather_Black_Fur_Tan_Wet, FawnLeather_Fur_Tan_Wet, LambLeather_Fur_Tan_Wet, CalfLeather_Angus_Fur_Tan_Wet, CalfLeather_Holstein_Fur_Tan_Wet, CalfLeather_Simmental_Fur_Tan_Wet, RaccoonLeather_Grey_Fur_Tan_Wet, Leather_Crude_Small_Tan_Wet
 - **Medium (4 types)**: PigLeather_Landrace_Fur_Tan_Wet, PigLeather_Black_Fur_Tan_Wet, SheepLeather_Fur_Tan_Wet, Leather_Crude_Medium_Tan_Wet
 - **Large (5 types)**: DeerLeather_Fur_Tan_Wet, CowLeather_Angus_Fur_Tan_Wet, CowLeather_Holstein_Fur_Tan_Wet, CowLeather_Simmental_Fur_Tan_Wet, Leather_Crude_Large_Tan_Wet

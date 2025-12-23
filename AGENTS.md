@@ -27,10 +27,10 @@ When working on Project Zomboid mods, follow this setup for local testing:
 The workshop uploader and game engine require specific structure:
 
 ```
-~/Zomboid/Workshop/LeatherDryingRack/
+~/Zomboid/Workshop/DryingRackFixedB42MP/
 └── Contents/                   # All mod files must be inside this
     └── mods/
-        └── LeatherDryingRack/
+        └── DryingRackFixedB42MP/
             ├── mod.info         # Mod metadata (nested only)
             ├── preview.png      # Workshop thumbnail (nested only)
             ├── .emmyrc.json    # EmmyLua configuration
@@ -45,10 +45,10 @@ The workshop uploader and game engine require specific structure:
 ### Installation Commands
 ```bash
 # Remove any existing installation
-rm -rf ~/Zomboid/Workshop/LeatherDryingRack
+rm -rf ~/Zomboid/Workshop/DryingRackFixedB42MP
 
 # Copy Contents folder (workshop uploader requirement)
-cp -r /path/to/project/Contents ~/Zomboid/Workshop/LeatherDryingRack
+cp -r /path/to/project/Contents ~/Zomboid/Workshop/DryingRackFixedB42MP
 ```
 
 ### Critical Constraints
@@ -66,7 +66,7 @@ cp -r /path/to/project/Contents ~/Zomboid/Workshop/LeatherDryingRack
 ### Mod Discovery Mitigation (macOS)
 Build 42 on macOS has difficulty with symlinks.
 - **Use Physical Copies**: Always copy files directly to the target directory via `./install.sh`.
-- **Workshop Path**: The project uses `~/Zomboid/Workshop/LeatherDryingRack` as the active mod location.
+- **Workshop Path**: The project uses `~/Zomboid/Workshop/DryingRackFixedB42MP` as the active mod location.
 
 ### Code Style & Formatting
 - **Lua Indentation**: Use **Tabs** for indentation in all Lua files to maintain consistency with the project's LSP (lua_ls) settings.
@@ -76,3 +76,8 @@ Build 42 on macOS has difficulty with symlinks.
 ### Scripting Utilities
 - **./install.sh**: Synchronizes local project files to the Zomboid Workshop directory.
 - **./publish.sh**: Wrapper script that runs `./install.sh` and then uses `steamcmd` to upload the mod to the Steam Workshop.
+
+## Troubleshooting & Logs
+When debugging issues in Project Zomboid, always check the console log for errors (e.g., Lua stack traces, mod loading failures).
+- **Log Path (macOS)**: `/Users/cduong/Zomboid/console.txt`
+- **Search for**: `DryingRackFixedB42MP` or `ERROR: lua` to find relevant logs.

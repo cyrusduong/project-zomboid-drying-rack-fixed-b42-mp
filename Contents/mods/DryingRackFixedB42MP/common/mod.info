@@ -1,0 +1,8 @@
+id=DryingRackFixedB42MP
+name=DryingRackFixed B42 MP
+description=A Project Zomboid Build 42 fix for broken drying rack mechanics (Leather and Plants). This is a temporary MP-compatible stop-gap until the passive drying UI is finalized by the developers. Adds context menu options to drying racks for processing items with immersive Timed Actions. Supports all vanilla leather types and various herbs/tobacco with strict rack size validation. Full Multiplayer support.
+author=keyreaper
+poster=preview.png
+icon=preview.png
+tags=Build 42;Crafting;QoL;Multiplayer;Animals;Clothing
+versionMin=42.0

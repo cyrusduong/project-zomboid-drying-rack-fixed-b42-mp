@@ -19,8 +19,9 @@ A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both 
 - **Medium**: Pig, Sheep, Crude Medium.
 - **Large**: Deer, Cow, Crude Large.
 
-### Plants & Herbs
-- **Small Rack**: Tobacco, Basil, Oregano, Rosemary, Sage, Thyme, Mint, Black Sage, Plantain.
+### Plants & Grains
+- **Small Rack (Herbs)**: Tobacco, Basil, Oregano, Rosemary, Sage, Thyme, Mint, Black Sage, Plantain.
+- **Large Rack (Grains)**: Wheat, Barley, Rye, Oats, Flax, Grass (converts to Hay).
 
 ## Usage
 
@@ -83,3 +84,9 @@ Use the `./publish.sh` script (requires `steamcmd`) to upload updates:
 ```bash
 ./publish.sh
 ```
+
+## Troubleshooting & Logs
+
+If the mod does not appear in the menu or actions fail, check the Project Zomboid console log:
+- **macOS**: `/Users/cduong/Zomboid/console.txt`
+- **Search for**: `DryingRackFixedB42MP` or `ERROR: lua`

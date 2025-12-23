@@ -28,8 +28,8 @@ cp -r "$PROJECT_ROOT/Contents" "$TARGET_DIR/"
 echo "Cleaning up Contents root..."
 rm -f "$TARGET_DIR/Contents/preview.png"
 find "$TARGET_DIR" -name ".DS_Store" -delete
-find "$TARGET_DIR" -name ".gitkeep" -delete
-find "$TARGET_DIR" -type d -empty -delete
+# NOTE: We keep common/mod.info as B42 sometimes requires a mod.info 
+# in the common folder to properly discover the mod across versions.
 
 # 5. Copy preview.png, mod.info and workshop.txt to the workshop root
 echo "Copying preview.png, mod.info and workshop.txt to workshop root..."

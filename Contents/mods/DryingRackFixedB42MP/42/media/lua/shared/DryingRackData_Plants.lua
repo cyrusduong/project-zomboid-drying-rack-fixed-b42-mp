@@ -27,6 +27,24 @@ DryingRackData_Plants = {
 			"Base.PlantainDried",
 		},
 	},
+	large = {
+		inputs = {
+			"Base.WheatSheaf",
+			"Base.BarleySheaf",
+			"Base.RyeSheaf",
+			"Base.OatsSheaf",
+			"Base.Flax",
+			"Base.GrassTuft",
+		},
+		outputs = {
+			"Base.WheatSheafDried",
+			"Base.BarleySheafDried",
+			"Base.RyeSheafDried",
+			"Base.OatsSheafDried",
+			"Base.FlaxDried",
+			"Base.HayTuft",
+		},
+	},
 }
 
 DryingRackMapping_Plants = {}
