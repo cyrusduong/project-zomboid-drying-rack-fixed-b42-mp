@@ -1,4 +1,4 @@
-# DryingRackFixed B42 MP
+# DryingRacksFixed B42 MP
 
 A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both **Leather** and **Plants** (Herbs/Tobacco). It provides immersive Timed Actions via the context menu to process wet items into dried versions.
 
@@ -34,15 +34,15 @@ A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both 
 
 ### Manual Installation
 1. Extract the mod to your Zomboid Workshop directory:
-   - **Mac**: `~/Zomboid/Workshop/DryingRackFixedB42MP/`
-   - **Windows**: `C:\Users\[username]\Zomboid\Workshop\DryingRackFixedB42MP\`
+   - **Mac**: `~/Zomboid/Workshop/DryingRacksFixedB42MP/`
+   - **Windows**: `C:\Users\[username]\Zomboid\Workshop\DryingRacksFixedB42MP\`
 
 The directory structure must be:
 ```
-DryingRackFixedB42MP/
+DryingRacksFixedB42MP/
 └── Contents/
     └── mods/
-        └── DryingRackFixedB42MP/
+        └── DryingRacksFixedB42MP/
             ├── mod.info
             └── 42/
                 └── media/
@@ -89,4 +89,4 @@ Use the `./publish.sh` script (requires `steamcmd`) to upload updates:
 
 If the mod does not appear in the menu or actions fail, check the Project Zomboid console log:
 - **macOS**: `/Users/cduong/Zomboid/console.txt`
-- **Search for**: `DryingRackFixedB42MP` or `ERROR: lua`
+- **Search for**: `DryingRacksFixedB42MP` or `ERROR: lua`

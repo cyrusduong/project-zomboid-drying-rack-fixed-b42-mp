@@ -3,7 +3,7 @@
 # Project Zomboid Mod Uninstallation Script
 # This script removes the local development version of the mod so the game falls back to the Steam Workshop version.
 
-TARGET_DIR="$HOME/Zomboid/Workshop/DryingRackFixedB42MP"
+TARGET_DIR="$HOME/Zomboid/Workshop/DryingRacksFixedB42MP"
 
 if [ -d "$TARGET_DIR" ]; then
     echo "Removing local development version at $TARGET_DIR..."

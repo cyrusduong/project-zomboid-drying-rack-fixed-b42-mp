@@ -2,7 +2,7 @@
 - [x] 1.1 Initialize project structure (Modular Architecture)
 - [x] 1.2 Create mod.info file with B42 metadata
 - [x] 1.3 Set up media/lua/{client,shared,tests} structure
-- [x] 1.4 Migrate mod identity to DryingRackFixedB42MP
+- [x] 1.4 Migrate mod identity to DryingRacksFixedB42MP
 
 ## 2. Core Implementation
 - [x] 2.1 Implement `DryingRackUtils.lua` for entity detection

@@ -14,4 +14,4 @@ Project Zomboid Build 42 introduced a new crafting UI system that broke existing
 ## Impact
 - Affected specs: crafting
 - Affected code: Lua scripts (client, shared, tests)
-- Breaking changes: Replaces the initial `LeatherDryingRack` implementation with a more robust, extensible architecture (`DryingRackFixedB42MP`).
+- Breaking changes: Replaces the initial `LeatherDryingRack` implementation with a more robust, extensible architecture (`DryingRacksFixedB42MP`).

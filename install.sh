@@ -4,9 +4,9 @@
 # This script copies the mod files to the Zomboid Workshop directory with the correct structure.
 
 PROJECT_ROOT="/Users/cduong/Projects/project-zomboid-mp-craft-leather-build-42"
-TARGET_DIR="$HOME/Zomboid/Workshop/DryingRackFixedB42MP"
+TARGET_DIR="$HOME/Zomboid/Workshop/DryingRacksFixedB42MP"
 
-echo "Installing DryingRackFixedB42MP mod..."
+echo "Installing DryingRacksFixedB42MP mod..."
 
 # 1. Clean up existing installation
 if [ -d "$TARGET_DIR" ]; then
@@ -33,8 +33,8 @@ find "$TARGET_DIR" -name ".DS_Store" -delete
 
 # 5. Copy preview.png, mod.info and workshop.txt to the workshop root
 echo "Copying preview.png, mod.info and workshop.txt to workshop root..."
-cp "$PROJECT_ROOT/Contents/mods/DryingRackFixedB42MP/preview.png" "$TARGET_DIR/preview.png"
-cp "$PROJECT_ROOT/Contents/mods/DryingRackFixedB42MP/mod.info" "$TARGET_DIR/mod.info"
+cp "$PROJECT_ROOT/Contents/mods/DryingRacksFixedB42MP/preview.png" "$TARGET_DIR/preview.png"
+cp "$PROJECT_ROOT/Contents/mods/DryingRacksFixedB42MP/mod.info" "$TARGET_DIR/mod.info"
 cp "$PROJECT_ROOT/workshop.txt" "$TARGET_DIR/workshop.txt"
 
 echo "Installation complete!"
