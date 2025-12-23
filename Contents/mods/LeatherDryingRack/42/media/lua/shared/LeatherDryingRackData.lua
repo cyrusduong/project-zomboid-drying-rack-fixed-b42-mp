@@ -78,11 +78,24 @@ end
 
 -- Utility functions
 function LeatherDryingRackUtils.getRackType(entity)
-    local name = entity:getName()
-    if string.find(name, "Simple_Drying_Rack") or string.find(name, "Herb_Drying_Rack") then
+    -- Check for B42 Entity names
+    local entityObj = entity.getEntity and entity:getEntity()
+    local entityName = entityObj and entityObj:getDefinitionName()
+    
+    if entityName == "Base.ES_DryingRackSmall" then
         return "small"
-    elseif string.find(name, "Drying_Rack") and not string.find(name, "Simple") then
+    elseif entityName == "Base.ES_DryingRackMedium" then
         return "medium"
+    elseif entityName == "Base.ES_DryingRackLarge" then
+        return "large"
+    end
+
+    -- Fallback to name check for older versions or modded racks
+    local name = entity:getName() or ""
+    if string.find(name, "Simple_Drying_Rack") or string.find(name, "Herb_Drying_Rack") or string.find(name, "Small") then
+        return "small"
+    elseif string.find(name, "Large") then
+        return "large"
     end
     return "medium" -- default
 end
@@ -95,7 +108,7 @@ function LeatherDryingRackUtils.getCompatibleSizes(rackType)
     elseif rackType == "large" then
         return {small = true, medium = true, large = true}
     end
-    return {}
+    return {small = true, medium = true} -- fallback default
 end
 
 function LeatherDryingRackUtils.isPlayerNearRack(player, rack)
@@ -106,26 +119,28 @@ function LeatherDryingRackUtils.isPlayerNearRack(player, rack)
     
     if not playerSquare or not rackSquare then return false end
     
-    local distance = math.sqrt(
-        math.pow(playerSquare:getX() - rackSquare:getX(), 2) +
-        math.pow(playerSquare:getY() - rackSquare:getY(), 2)
-    )
+    -- Using the game's native distance check for better accuracy
+    local dist = IsoUtils.DistanceTo(playerSquare:getX(), playerSquare:getY(), rackSquare:getX() + 0.5, rackSquare:getY() + 0.5)
     
-    return distance <= 2.0 -- 2 tiles interaction range
+    return dist <= 3.0 -- Increased to 3 tiles for easier interaction
 end
 
 function LeatherDryingRackUtils.getWetLeatherItems(player)
     local items = {}
     local inventory = player:getInventory()
     
-    for itemType, mapping in pairs(LeatherDryingRackMapping) do
-        local item = inventory:getFirstTagRecurse(itemType)
-        if item then
+    -- Use a list of all items to find matches, as getFirstTypeRecurse only gets one
+    local allItems = inventory:getItems()
+    for i=0, allItems:size()-1 do
+        local item = allItems:get(i)
+        local fullType = item:getFullType()
+        local mapping = LeatherDryingRackMapping[fullType]
+        if mapping then
             table.insert(items, {
                 item = item,
                 outputType = mapping.output,
                 size = mapping.size,
-                inputType = itemType
+                inputType = fullType
             })
         end
     end

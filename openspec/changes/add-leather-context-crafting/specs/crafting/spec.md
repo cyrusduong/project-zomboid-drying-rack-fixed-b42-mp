@@ -5,8 +5,17 @@ The system SHALL provide instant leather drying options when player interacts wi
 
 #### Scenario: Drying Rack with Wet Leather
 - **WHEN** player right-clicks on drying rack with wet furred leather items in inventory
-- **THEN** context menu displays "Dry Leather" options for each compatible leather type
+- **THEN** context menu displays a single "Dry Leather" main option
+- **AND** a sub-menu contains options for each compatible leather type
+- **AND** a "Dry All" option is available at the top of the sub-menu if multiple types exist
 - **AND** options are filtered by rack size compatibility
+
+#### Scenario: Dry All Functionality
+- **WHEN** player selects "Dry All"
+- **THEN** system processes all compatible wet furred leather items in the inventory
+- **AND** "compatible" is defined by the drying rack's size (e.g., Medium rack only dries Small and Medium leather)
+- **AND** converts them to their respective dried versions immediately
+- **AND** shows a single summary message (e.g., "Dried 5 leather items")
 
 #### Scenario: Rack Size Validation
 - **WHEN** player has large leather but only small drying rack
@@ -80,13 +89,15 @@ The system SHALL provide clear feedback when drying cannot be performed.
 - **THEN** system properly handles container operations without Java errors
 - **AND** maintains inventory synchronization
 
-### Requirement: Comprehensive Test Coverage
-The system SHALL include Lua tests to verify all entity processing scenarios.
+### Requirement: Visual Assets and Branding
 
-#### Test Scenarios
-- **Inventory Detection Tests**: Verify all 18 wet leather types are properly detected
-- **Rack Size Tests**: Validate size compatibility rules for all rack types
-- **Distance Tests**: Ensure distance requirements work correctly
-- **Multiplayer Tests**: Verify functionality in B42 environment
-- **Error Handling Tests**: Test all failure scenarios and error messages
-- **Integration Tests**: Validate with existing vanilla drying rack entities
+The mod SHALL have clear branding for discoverability on Steam Workshop.
+
+#### Branding Elements
+- **Mod Name**: Leather Drying Rack Fix B42
+- **Thumbnail**: A 512x512 PNG image (`preview.png`) with clear text.
+- **Visual Goal**: Eventually replace placeholder thumbnail with an in-game screenshot of the "Dry Leather" context menu on a drying rack for high discoverability.
+
+#### Workshop Metadata
+- **Description**: Must use line breaks between paragraphs for readability. SteamCMD requires explicit multi-line `description=` entries or empty `description=` entries for spacing.
+- **Tags**: Animals, Clothing/Armor, Interface, Multiplayer, QoL, Build 42.

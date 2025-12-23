@@ -1,8 +1,8 @@
-name=Context Menu Craft Leather Fix - Build 42 MP
+name=Leather Drying Rack Fix B42
 id=ContextMenuCraftLeather
 description=Adds context menu options to drying racks for instant processing of wet furred leather into dried leather. Supports all vanilla leather types with proper rack size validation.
 author=keyreaper
-activateon=startup
-poster=poster.png
-tags=Build 41
-versionMin=41.0
+poster=preview.png
+icon=preview.png
+tags=Build 42;Crafting;QoL;Multiplayer;Animals;Clothing
+versionMin=42.0

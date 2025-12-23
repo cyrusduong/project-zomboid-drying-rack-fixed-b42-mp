@@ -1,4 +1,4 @@
-# Context Menu Craft Leather Fix - Build 42 MP
+# Leather Drying Rack Fix B42
 
 A Project Zomboid mod that fixes broken leather crafting mechanics by adding context menu options to drying racks for instant processing of wet furred leather into dried leather.
 
@@ -35,7 +35,7 @@ This mod addresses the leather crafting issues introduced in Project Zomboid Bui
 ## Installation
 
 ### Manual Installation
-1. Download the mod from [Steam Workshop] (placeholder link)
+1. Download the mod from [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3629422471)
 2. Extract to your Zomboid Workshop directory:
    - **Windows**: `C:\Users\[username]\Zomboid\Workshop\LeatherDryingRack\`
    - **Mac**: `~/Zomboid/Workshop/LeatherDryingRack/`
