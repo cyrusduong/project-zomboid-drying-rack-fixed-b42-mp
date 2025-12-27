@@ -19,19 +19,21 @@ function ISDryingRackMenu_Plants.getDryablePlantItems(player)
  		if item then
 			local fullType = item:getFullType()
 			print("[ISDryingRackMenu_Plants] Checking item: " .. tostring(fullType))
-			local mapping = DryingRackMapping_Plants[fullType]
-			if mapping then
-				print("[ISDryingRackMenu_Plants] Found mapping for " .. fullType .. " -> " .. mapping.output)
-				table.insert(items, {
- 					item = item,
- 					outputType = mapping.output,
- 					size = mapping.size,
- 					inputType = fullType,
-				})
+			local mappings = DryingRackMapping_Plants[fullType]
+			if mappings then
+				for _, mapping in ipairs(mappings) do
+					print("[ISDryingRackMenu_Plants] Found mapping for " .. fullType .. " -> " .. mapping.output .. " (Size: " .. mapping.size .. ")")
+					table.insert(items, {
+						item = item,
+						outputType = mapping.output,
+						size = mapping.size,
+						inputType = fullType,
+					})
+				end
 			end
  		end
  	end
- 	print("[ISDryingRackMenu_Plants] Returning " .. #items .. " dryable plant items")
+ 	print("[ISDryingRackMenu_Plants] Returning " .. #items .. " dryable plant mapping entries")
  	return items
 end
 
@@ -93,16 +95,6 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 	end
 
 	-- Find drying rack objects
-	-- We start at i = 1 (the Floor) to ensure the menu works even if clicking empty space inside the rack.
-	-- Sometimes cursor is in a weird spot, IE. inbetween two drying racks, we can get both
-	-- with the getSquare -> getObjects then loop thru objects. However this may cause duplicate values.
-	--
-	-- INVARIANT: We know we can only have 1 rack per coordinate, so if we already put an object
-	-- in the drying rack table for a certain coordinate then we don't need to put it again.
-	-- INVARIANT: If we have multiple of the same size drying rack next to each other, it doesn't
-	-- make sense to list all of them, simply list the first one in the loop.
-	-- IE. At maximum there can be 3 options for each rack size, otherwise maximum of 1 per rack size displayed
-	-- in the context menu
 	for i = 1, #worldobjects do
 		local rootObj = worldobjects[i]
  		if rootObj and rootObj.getSquare then
@@ -139,7 +131,7 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
  	end
 
  	local dryablePlants = ISDryingRackMenu_Plants.getDryablePlantItems(playerObj)
- 	print("[ISDryingRackMenu_Plants] Player has " .. #dryablePlants .. " dryable plant items")
+ 	print("[ISDryingRackMenu_Plants] Player has " .. #dryablePlants .. " dryable plant mapping entries")
 
  	if #dryablePlants == 0 then
  		print("[ISDryingRackMenu_Plants] No dryable plants in inventory, returning")
@@ -152,34 +144,41 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 
  		local compatiblePlants = {}
  		local incompatiblePlants = {}
+		local seenInputsForThisRack = {}
 
  		for _, plant in ipairs(dryablePlants) do
  			print("[ISDryingRackMenu_Plants]   Checking plant " .. tostring(plant.inputType) .. " size: " .. tostring(plant.size) .. " vs rack size: " .. tostring(rackSize))
  			if plant.size == rackSize then
  				table.insert(compatiblePlants, plant)
  				print("[ISDryingRackMenu_Plants]   -> Compatible!")
- 			else
- 				table.insert(incompatiblePlants, plant)
- 				print("[ISDryingRackMenu_Plants]   -> Not compatible (wrong size)")
+				seenInputsForThisRack[plant.item] = true
  			end
  		end
+
+		-- Second pass for incompatible items
+		for _, plant in ipairs(dryablePlants) do
+			if not seenInputsForThisRack[plant.item] then
+				local alreadyInIncompatible = false
+				for _, p in ipairs(incompatiblePlants) do
+					if p.item == plant.item then alreadyInIncompatible = true; break end
+				end
+
+				if not alreadyInIncompatible then
+					table.insert(incompatiblePlants, plant)
+					print("[ISDryingRackMenu_Plants]   -> Not compatible (wrong size)")
+				end
+			end
+		end
 
  		print("[ISDryingRackMenu_Plants] Compatible items for this rack: " .. #compatiblePlants)
  		print("[ISDryingRackMenu_Plants] Incompatible items for this rack: " .. #incompatiblePlants)
 
-		if #compatiblePlants > 0 or #incompatiblePlants > 0 then
-			local rackName = DryingRackUtils.getDisplayName(category, rackSize)
-			print("[ISDryingRackMenu_Plants] Creating submenu for: " .. rackName)
-
-			local rackOption = context:addOptionOnTop("Dry Herbs on " .. rackSize:gsub("^%l", string.upper) .. " Rack", worldobjects, nil)
-			print("[ISDryingRackMenu_Plants] rackOption created: " .. tostring(rackOption))
-
+ 		if #compatiblePlants > 0 or #incompatiblePlants > 0 then
+ 			local rackOption = context:addOptionOnTop("Dry Herbs on " .. rackSize:gsub("^%l", string.upper) .. " Rack", worldobjects, nil)
  			local subMenu = ISContextMenu:getNew(context)
  			context:addSubMenu(rackOption, subMenu)
- 			print("[ISDryingRackMenu_Plants] subMenu created and attached")
 
  			if #compatiblePlants > 1 then
- 				print("[ISDryingRackMenu_Plants] Adding Dry All option for " .. #compatiblePlants .. " items")
  				subMenu:addOption(
  					"Dry All (" .. #compatiblePlants .. ")",
  					playerObj,
@@ -189,31 +188,29 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
  				)
  			end
 
-  			for _, plant in ipairs(compatiblePlants) do
-  				local label = plant.item:getName()
-  				print("[ISDryingRackMenu_Plants] Adding individual option: " .. label)
-  				subMenu:addOption(label, playerObj, ISDryingRackMenu_Plants.dryPlant, plant, rack)
-  			end
+   			for _, plant in ipairs(compatiblePlants) do
+   				local label = plant.item:getName()
+   				subMenu:addOption(label, playerObj, ISDryingRackMenu_Plants.dryPlant, plant, rack)
+   			end
 
-			for _, plant in ipairs(incompatiblePlants) do
-				local label = plant.item:getName()
-				local weights = { small = 1, large = 3 }
-				local plantWeight = weights[plant.size] or 0
-				local rackWeight = weights[rackSize] or 0
-				local rackTooSmall = plantWeight > rackWeight
-				local statusText = rackTooSmall and " (Rack too small)" or " (Rack too large)"
-				local toolTipName = rackTooSmall and "Rack Too Small" or "Rack Too Large"
-				print("[ISDryingRackMenu_Plants] Adding disabled option: " .. label .. statusText)
-				local option = subMenu:addOption(label .. statusText, rack, nil)
-				option.notAvailable = true
-				option.toolTip = ISWorldObjectContextMenu.addToolTip()
-				option.toolTip:setName(toolTipName)
-				option.toolTip.description = "This plant requires a "
-					.. plant.size
-					.. " drying rack, but this is a "
-					.. rackSize
-					.. " rack."
-			end
+ 			for _, plant in ipairs(incompatiblePlants) do
+ 				local label = plant.item:getName()
+ 				local weights = { small = 1, large = 3 }
+ 				local plantWeight = weights[plant.size] or 0
+ 				local rackWeight = weights[rackSize] or 0
+ 				local rackTooSmall = plantWeight > rackWeight
+ 				local statusText = rackTooSmall and " (Rack too small)" or " (Rack too large)"
+ 				local toolTipName = rackTooSmall and "Rack Too Small" or "Rack Too Large"
+ 				local option = subMenu:addOption(label .. statusText, rack, nil)
+ 				option.notAvailable = true
+ 				option.toolTip = ISWorldObjectContextMenu.addToolTip()
+ 				option.toolTip:setName(toolTipName)
+ 				option.toolTip.description = "This plant requires a "
+ 					.. plant.size
+ 					.. " drying rack, but this is a "
+ 					.. rackSize
+ 					.. " rack."
+ 			end
  		end
  	end
 

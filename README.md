@@ -52,9 +52,9 @@ A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both 
 </details>
 
 <details>
-<summary>Plants & Grains (15 types)</summary>
+<summary>Plants & Grains (40+ types)</summary>
 
-### Small Rack (Herbs)
+### Small Rack (Herbs & Flowers)
 - `Base.Tobacco` -> `Base.TobaccoDried`
 - `Base.Basil` -> `Base.BasilDried`
 - `Base.Oregano` -> `Base.OreganoDried`
@@ -64,6 +64,12 @@ A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both 
 - `Base.MintHerb` -> `Base.MintHerbDried`
 - `Base.BlackSage` -> `Base.BlackSageDried`
 - `Base.Plantain` -> `Base.PlantainDried`
+- **Medical/Foraged:** Chamomile, Chives, Cilantro, Marigold, Parsley, Comfrey, Common Mallow, Wild Garlic.
+* **Flowers:** Roses, Lavender, Poppy Pods.
+* **Other:** Hops, Grass (`Base.GrassTuft` -> `Base.HayTuft`).
+
+### Vegetable Seeds (Small Rack)
+* Dry your harvest to get seeds: Jalapeños, Habaneros, Greenpeas, Soybeans.
 
 ### Large Rack (Grains & Fibers)
 - `Base.WheatSheaf` -> `Base.WheatSheafDried`
@@ -71,6 +77,9 @@ A Project Zomboid Build 42 mod that fixes broken drying rack mechanics for both 
 - `Base.RyeSheaf` -> `Base.RyeSheafDried`
 - `Base.OatsSheaf` -> `Base.OatsSheafDried`
 - `Base.GrassTuft` -> `Base.HayTuft`
+- **Corn:** `Base.Corn` -> `Base.CornSeed`
+- **Sunflower:** `Base.SunflowerHead` -> `Base.SunflowerHeadDried`
+- **Fiber:** Flax, Hemp.
 </details>
 
 ## Technical Details
