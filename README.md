@@ -203,7 +203,9 @@ While `sendReplaceItemInContainer` works for basic items, Build 42's complex inv
 
 ## Troubleshooting & Logs
 If items are disappearing or duplicating in Multiplayer:
-- **Server Logs**: Check `coop-console.txt` for `[DryingRackServer]` tags. Look for "successfully added" or "ERROR: Item with ID not found" messages.
+- **Server Logs**: Check `coop-console.txt` (hosted local) or `server-console.txt` (dedicated) for `[DryingRackServer]` tags. Look for "successfully added" or "ERROR: Item with ID not found" messages.
 - **Client Logs**: Check `console.txt` for `[ISDryItemAction]` tags to ensure the command was sent.
 - **Duplication**: Duplication usually happens if the client calls `AddItem` locally while the server also calls `AddItem`. The fix is to ensure the client only `Remove`s the old item and lets the server handle the `Add`.
+
+**For developers:** See `GAME_FILES_REFERENCE.md` for comprehensive information on searching vanilla game code, debugging multiplayer issues, and understanding Project Zomboid's client-server architecture.
 

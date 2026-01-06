@@ -6,7 +6,12 @@
 	"previewfile"		"/Users/cduong/Zomboid/Workshop/DryingRacksFixedB42MP/preview.png"
 	"visibility"		"0"
  	"title"		"DryingRacksFixed B42 MP"
-	"description"		"A Project Zomboid Build 42 fix for broken drying rack mechanics (Leather and Plants).
+	"description"		"A Project Zomboid Build 42 fix for broken drying rack mechanics (Leather and Plants) in multiplayer. FOR MULTIPLAYER ONLY. Singleplayer drying racks work fine. DO NOT INSTALL FOR SINGLEPLAYER.
+
+NOTE: Make sure you have DoLuaChecksum set to false and \\ in front of each mod in ModID line.
+
+Workshop ID: 3629422471
+ModID: \\DryingRacksFixedB42MP
 
 This is a temporary MP-compatible stop-gap until the passive drying UI is finalized by the developers. Adds [b]Dry Leather[/b] and [b]Dry Herbs[/b] context menu options to drying racks for processing items. Supports all vanilla leather types and various herbs/tobacco with strict rack size validation.
 
@@ -52,5 +57,5 @@ Full Multiplayer support.
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_ui.png[/img]
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_action.png[/img]
  "
- 														"changenote"		"* docs: add complete list of all supported recipes to workshop description"
+ 															"changenote"		"Fix multiplayer container sync - items now properly appear in worn containers (bags) immediately after drying. Server uses sendAddItemToContainer for proper client sync."
 }

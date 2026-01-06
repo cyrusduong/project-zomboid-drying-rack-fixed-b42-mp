@@ -10,7 +10,12 @@ require("TimedActions/ISBaseTimedAction")
 ISDryItemAction = ISBaseTimedAction:derive("ISDryItemAction")
 
 function ISDryItemAction:isValid()
-	return self.character:getInventory():contains(self.item) and self.rack:getSquare() ~= nil
+	if not self.item or not self.character or not self.rack then
+		return false
+	end
+	local itemContainer = self.item.getContainer and self.item:getContainer()
+	local inMainInventory = self.character:getInventory():contains(self.item)
+	return (inMainInventory or itemContainer ~= nil) and self.rack:getSquare() ~= nil
 end
 
 function ISDryItemAction:waitToStart()
@@ -37,32 +42,50 @@ end
 
 function ISDryItemAction:perform()
 	self.item:setJobDelta(0.0)
+	print("[ISDryItemAction] Drying: " .. tostring(self.item.getFullType and self.item:getFullType()))
 
+	local itemContainer = self.item.getContainer and self.item:getContainer()
+	print("[ISDryItemAction] Container: " .. tostring(itemContainer and itemContainer:getType() or "main inventory"))
+	print("[ISDryItemAction] isServer: " .. tostring(isServer()) .. ", isClient: " .. tostring(isClient()))
+
+	-- In multiplayer (client mode), always use server commands for authoritative handling
 	if isClient() then
-		-- In MP, we send a command to the server to handle the swap authoritatively
-		local args = { itemID = self.item:getID(), outputType = self.outputType }
+		local itemCount = self.item:getCount()
+		local args = { itemID = self.item:getID(), outputType = self.outputType, count = itemCount }
 		sendClientCommand(self.character, "DryingRack", "dryItem", args)
+		print("[ISDryItemAction] Sent server command for item: " .. tostring(self.item:getID()))
 		
-		-- We only remove the wet item locally for responsiveness.
-		-- We DO NOT AddItem here because the server will do it and sync it back.
-		-- This prevents duplication.
-		self.character:getInventory():Remove(self.item)
+		-- Optimistically remove the wet item locally for responsive UI
+		-- The server will authoritatively add the dried item and sync it back
+		local originalContainer = itemContainer or self.character:getInventory()
+		originalContainer:Remove(self.item)
+		print("[ISDryItemAction] Removed wet item from client container")
 	else
-		-- In SP, we just do it locally
-		local added = self.character:getInventory():AddItem(self.outputType)
-		self.character:getInventory():Remove(self.item)
+		-- Single player only - handle locally
+		local originalContainer = itemContainer or self.character:getInventory()
+		local itemCount = self.item:getCount()
+		
+		originalContainer:Remove(self.item)
+		
+		local newItem = originalContainer:AddItem(self.outputType)
+		
+		if newItem then
+			print("[ISDryItemAction] Added to: " .. tostring(originalContainer:getType()))
+			if itemCount and itemCount > 1 then
+				newItem:setCount(itemCount)
+			end
+		else
+			print("[ISDryItemAction] ERROR: Failed to add item!")
+		end
 	end
 
 	-- Feedback
 	if self.character:isLocalPlayer() then
-		print("[ISDryItemAction] perform - generating feedback for: " .. tostring(self.outputType))
 		local itemName = "Dried Item"
-		-- In Build 42, use instanceItem for previewing names
 		local item = instanceItem(self.outputType)
 		if item then
 			itemName = item:getName()
 		end
-		print("[ISDryItemAction] perform - halo text: " .. tostring(itemName) .. " dried")
 		HaloTextHelper.addGoodText(self.character, itemName .. " dried")
 	end
 

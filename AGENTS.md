@@ -93,5 +93,29 @@ Build 42 on macOS has difficulty with symlinks.
 
 ## Troubleshooting & Logs
 When debugging issues in Project Zomboid, always check the console log for errors (e.g., Lua stack traces, mod loading failures).
+
+### Log Files (Single Player)
 - **Log Path (macOS)**: `/Users/cduong/Zomboid/console.txt`
 - **Search for**: `DryingRacksFixedB42MP` or `ERROR: lua` to find relevant logs.
+
+### Log Files (Multiplayer - Hosted Local)
+When using "Host" from the main menu, you run BOTH client and server in separate processes:
+- **Client log**: `~/Zomboid/console.txt` - Client-side Lua code logs here
+- **Server log**: `~/Zomboid/coop-console.txt` - **Server-side Lua code logs here!**
+
+**CRITICAL:** Many developers only check `console.txt` and miss server-side errors in `coop-console.txt`!
+
+```bash
+# Watch both logs when testing multiplayer
+tail -f ~/Zomboid/console.txt      # Client logs
+tail -f ~/Zomboid/coop-console.txt # Server logs (check this for server command handlers!)
+```
+
+## Vanilla Game Files Reference
+
+When implementing features (especially multiplayer/server features), reference vanilla game code for API usage patterns:
+
+- **See `GAME_FILES_REFERENCE.md`** for comprehensive guide on searching vanilla code
+- **Game files location:** `~/Library/Application Support/Steam/steamapps/common/ProjectZomboid/Project Zomboid.app/Contents/Java/media/lua/`
+- **Most useful:** `server/ClientCommands.lua` for server command examples
+- **Key pattern:** Always use `sendAddItemToContainer(container, item)` after server-side `AddItem()` calls

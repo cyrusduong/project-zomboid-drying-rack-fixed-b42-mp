@@ -9,27 +9,122 @@ require("TimedActions/ISDryItemAction")
 ISDryingRackMenu_Leather = {}
 
 ---@param player IsoPlayer
+---@return table<string, InventoryItem>
+function ISDryingRackMenu_Leather.getAllAccessibleItems(player)
+	local allItems = {}
+
+	local function processItemList(itemList)
+		for i = 0, (itemList and itemList:size() or 1) - 1 do
+			local item = itemList:get(i)
+			if item then
+				allItems[item] = true
+			end
+		end
+	end
+
+	print("[ISDryingRackMenu_Leather.getAllAccessibleItems] Scanning main inventory...")
+	processItemList(player:getInventory():getItems())
+
+	print("[ISDryingRackMenu_Leather.getAllAccessibleItems] Scanning primary hand...")
+	local primaryHand = player:getPrimaryHandItem()
+	if primaryHand then
+		print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Primary hand: " .. tostring(primaryHand:getFullType()))
+		allItems[primaryHand] = true
+		local container = nil
+		if primaryHand.getItemContainer then
+			container = primaryHand:getItemContainer()
+		end
+		if not container and primaryHand.getInventory then
+			container = primaryHand:getInventory()
+		end
+		if container then
+			print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Primary hand has container, scanning...")
+			processItemList(container:getItems())
+		else
+			print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Primary hand has NO container")
+		end
+	end
+
+	print("[ISDryingRackMenu_Leather.getAllAccessibleItems] Scanning secondary hand...")
+	local secondaryHand = player:getSecondaryHandItem()
+	if secondaryHand then
+		print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Secondary hand: " .. tostring(secondaryHand:getFullType()))
+		allItems[secondaryHand] = true
+		local container = nil
+		if secondaryHand.getItemContainer then
+			container = secondaryHand:getItemContainer()
+		end
+		if not container and secondaryHand.getInventory then
+			container = secondaryHand:getInventory()
+		end
+		if container then
+			print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Secondary hand has container, scanning...")
+			processItemList(container:getItems())
+		else
+			print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Secondary hand has NO container")
+		end
+	end
+
+	print("[ISDryingRackMenu_Leather.getAllAccessibleItems] Scanning worn items...")
+	local wornItems = player:getWornItems()
+	if wornItems then
+		print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Worn items size: " .. tostring(wornItems:size()))
+		for i = 0, wornItems:size() - 1 do
+			local wornItem = wornItems:get(i)
+			if wornItem then
+				local item = wornItem:getItem()
+				if item then
+					local fullType = item:getFullType()
+					allItems[item] = true
+					print("[ISDryingRackMenu_Leather.getAllAccessibleItems]   Worn item: " .. tostring(fullType))
+					local container = nil
+					if item.getItemContainer then
+						container = item:getItemContainer()
+					end
+					if not container and item.getInventory then
+						container = item:getInventory()
+					end
+					if container then
+						local containerItems = container:getItems()
+						print("[ISDryingRackMenu_Leather.getAllAccessibleItems]     Has container with " .. tostring(containerItems:size()) .. " items")
+						processItemList(containerItems)
+						for j = 0, containerItems:size() - 1 do
+							local contItem = containerItems:get(j)
+							if contItem then
+								print("[ISDryingRackMenu_Leather.getAllAccessibleItems]       Container item: " .. tostring(contItem:getFullType()))
+							end
+						end
+					else
+						print("[ISDryingRackMenu_Leather.getAllAccessibleItems]     NO container")
+					end
+				end
+			end
+		end
+	end
+
+	return allItems
+end
+
+---@param player IsoPlayer
 ---@return table
 function ISDryingRackMenu_Leather.getWetLeatherItems(player)
 	local items = {}
-	local inventory = player:getInventory()
-	local allItems = inventory:getItems()
-	print("[ISDryingRackMenu_Leather] getWetLeatherItems - total items: " .. (allItems and allItems:size() or 0))
-	for i = 0, (allItems and allItems:size() or 1) - 1 do
-		local item = allItems:get(i)
-		if item then
-			local fullType = item:getFullType()
-			print("[ISDryingRackMenu_Leather] Checking item: " .. tostring(fullType))
-			local mapping = DryingRackMapping_Leather[fullType]
-			if mapping then
-				print("[ISDryingRackMenu_Leather] Found mapping for " .. fullType .. " -> " .. mapping.output)
-				table.insert(items, {
-					item = item,
-					outputType = mapping.output,
-					size = mapping.size,
-					inputType = fullType,
-				})
-			end
+	local allAccessibleItems = ISDryingRackMenu_Leather.getAllAccessibleItems(player)
+	local count = 0
+	for _ in pairs(allAccessibleItems) do count = count + 1 end
+	print("[ISDryingRackMenu_Leather] getWetLeatherItems - total accessible items: " .. count)
+	for item, _ in pairs(allAccessibleItems) do
+		local fullType = item:getFullType()
+		print("[ISDryingRackMenu_Leather] Checking item: " .. tostring(fullType))
+		local mapping = DryingRackMapping_Leather[fullType]
+		if mapping then
+			print("[ISDryingRackMenu_Leather] Found mapping for " .. fullType .. " -> " .. mapping.output)
+			table.insert(items, {
+				item = item,
+				outputType = mapping.output,
+				size = mapping.size,
+				inputType = fullType,
+			})
 		end
 	end
 	print("[ISDryingRackMenu_Leather] Returning " .. #items .. " wet leather items")
