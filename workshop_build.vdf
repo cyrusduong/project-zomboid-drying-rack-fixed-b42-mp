@@ -57,5 +57,5 @@ Full Multiplayer support.
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_ui.png[/img]
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_action.png[/img]
  "
- 															"changenote"		"Fix multiplayer container sync - items now properly appear in worn containers (bags) immediately after drying. Server uses sendAddItemToContainer for proper client sync."
+ 																	"changenote"		"* fix: multiplayer container sync using sendAddItemToContainer API"
 }

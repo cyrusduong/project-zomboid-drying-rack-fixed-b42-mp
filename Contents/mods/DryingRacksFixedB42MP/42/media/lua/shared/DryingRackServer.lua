@@ -1,4 +1,6 @@
-if not isServer() then return end
+if not isServer() then
+	return
+end
 
 DryingRackServer = {}
 DryingRackServer.Commands = {}
@@ -9,13 +11,22 @@ function DryingRackServer.Commands.dryItem(player, args)
 	local itemID = args.itemID
 	local outputType = args.outputType
 	local count = args.count
-	
-	print("[DryingRackServer] dryItem - player: " .. tostring(player:getUsername()) .. ", itemID: " .. tostring(itemID) .. ", outputType: " .. tostring(outputType) .. ", count: " .. tostring(count))
-	
+
+	print(
+		"[DryingRackServer] dryItem - player: "
+			.. tostring(player:getUsername())
+			.. ", itemID: "
+			.. tostring(itemID)
+			.. ", outputType: "
+			.. tostring(outputType)
+			.. ", count: "
+			.. tostring(count)
+	)
+
 	-- Find the item - search main inventory first
 	local inventory = player:getInventory()
 	local item = inventory:getItemWithID(itemID)
-	
+
 	-- Also search all containers the player has access to
 	local itemContainer = nil
 	if not item then
@@ -31,7 +42,7 @@ function DryingRackServer.Commands.dryItem(player, args)
 				break
 			end
 		end
-		
+
 		-- If not found, check worn item containers (bags, etc.)
 		if not item then
 			local wornItems = player:getWornItems()
@@ -49,33 +60,40 @@ function DryingRackServer.Commands.dryItem(player, args)
 									if it and it:getID() == itemID then
 										item = it
 										itemContainer = cont
-										print("[DryingRackServer] Found item in worn container: " .. tostring(wornObj:getFullType()))
+										print(
+											"[DryingRackServer] Found item in worn container: "
+												.. tostring(wornObj:getFullType())
+										)
 										break
 									end
 								end
 							end
 						end
-						if item then break end
+						if item then
+							break
+						end
 					end
 				end
 			end
 		end
 	end
-	
+
 	if item then
 		-- Get count from original item if not provided in args
 		if not count or count <= 0 then
 			count = item:getCount()
 		end
-		
+
 		-- Remove from wherever it is
-		print("[DryingRackServer] removing: " .. tostring(item:getFullType()) .. " (ID: " .. tostring(item:getID()) .. ")")
+		print(
+			"[DryingRackServer] removing: " .. tostring(item:getFullType()) .. " (ID: " .. tostring(item:getID()) .. ")"
+		)
 		if itemContainer then
 			itemContainer:Remove(item)
 		else
 			inventory:Remove(item)
 		end
-		
+
 		-- Add new item to the same container (or main inventory if no container)
 		print("[DryingRackServer] adding: " .. tostring(outputType))
 		local newItem = nil
@@ -86,14 +104,20 @@ function DryingRackServer.Commands.dryItem(player, args)
 			newItem = inventory:AddItem(outputType)
 			print("[DryingRackServer] Added to main inventory")
 		end
-		
+
 		if newItem then
 			if count and count > 1 then
 				newItem:setCount(count)
 				print("[DryingRackServer] set quantity to: " .. tostring(count))
 			end
-			print("[DryingRackServer] successfully added: " .. tostring(newItem:getFullType()) .. " (New ID: " .. tostring(newItem:getID()) .. ")")
-			
+			print(
+				"[DryingRackServer] successfully added: "
+					.. tostring(newItem:getFullType())
+					.. " (New ID: "
+					.. tostring(newItem:getID())
+					.. ")"
+			)
+
 			-- Sync the container to the client so they see the update immediately
 			if itemContainer then
 				sendAddItemToContainer(itemContainer, newItem)
@@ -106,12 +130,16 @@ function DryingRackServer.Commands.dryItem(player, args)
 			print("[DryingRackServer] ERROR: Failed to add item " .. tostring(outputType))
 		end
 	else
-		print("[DryingRackServer] ERROR: Item with ID " .. tostring(itemID) .. " not found in player inventory or containers.")
+		print(
+			"[DryingRackServer] ERROR: Item with ID "
+				.. tostring(itemID)
+				.. " not found in player inventory or containers."
+		)
 	end
 end
 
 local function OnClientCommand(module, command, player, args)
-	print("[DryingRackServer] OnClientCommand - module: " .. tostring(module) .. ", command: " .. tostring(command))
+	-- print("[DryingRackServer] OnClientCommand - module: " .. tostring(module) .. ", command: " .. tostring(command))
 	if module == "DryingRack" then
 		if DryingRackServer.Commands[command] then
 			DryingRackServer.Commands[command](player, args)
@@ -120,4 +148,4 @@ local function OnClientCommand(module, command, player, args)
 end
 
 Events.OnClientCommand.Add(OnClientCommand)
-print("[DryingRackServer] Loaded and registered OnClientCommand")
+-- print("[DryingRackServer] Loaded and registered OnClientCommand")
