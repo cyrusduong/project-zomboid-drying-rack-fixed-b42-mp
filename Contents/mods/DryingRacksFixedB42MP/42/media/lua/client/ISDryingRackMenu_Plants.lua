@@ -12,7 +12,7 @@ ISDryingRackMenu_Plants = {}
 function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 	local allItems = {}
 
-	local function processItemList(itemList, source)
+	local function processItemList(itemList)
 		for i = 0, (itemList and itemList:size() or 1) - 1 do
 			local item = itemList:get(i)
 			if item then
@@ -22,17 +22,23 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 	end
 
 	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning main inventory...")
-	processItemList(player:getInventory():getItems(), "main")
+	processItemList(player:getInventory():getItems())
 
 	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning primary hand...")
 	local primaryHand = player:getPrimaryHandItem()
 	if primaryHand then
 		print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand: " .. tostring(primaryHand:getFullType()))
 		allItems[primaryHand] = true
-		local container = primaryHand:getContainer()
+		local container = nil
+		if primaryHand.getItemContainer then
+			container = primaryHand:getItemContainer()
+		end
+		if not container and primaryHand.getInventory then
+			container = primaryHand:getInventory()
+		end
 		if container then
 			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand has container, scanning...")
-			processItemList(container:getItems(), "primary_hand_container")
+			processItemList(container:getItems())
 		else
 			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand has NO container")
 		end
@@ -43,10 +49,16 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 	if secondaryHand then
 		print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand: " .. tostring(secondaryHand:getFullType()))
 		allItems[secondaryHand] = true
-		local container = secondaryHand:getContainer()
+		local container = nil
+		if secondaryHand.getItemContainer then
+			container = secondaryHand:getItemContainer()
+		end
+		if not container and secondaryHand.getInventory then
+			container = secondaryHand:getInventory()
+		end
 		if container then
 			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand has container, scanning...")
-			processItemList(container:getItems(), "secondary_hand_container")
+			processItemList(container:getItems())
 		else
 			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand has NO container")
 		end
@@ -74,7 +86,7 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 					if container then
 						local containerItems = container:getItems()
 						print("[ISDryingRackMenu_Plants.getAllAccessibleItems]     Has container with " .. tostring(containerItems:size()) .. " items")
-						processItemList(containerItems, "worn_container")
+						processItemList(containerItems)
 						for j = 0, containerItems:size() - 1 do
 							local contItem = containerItems:get(j)
 							if contItem then
