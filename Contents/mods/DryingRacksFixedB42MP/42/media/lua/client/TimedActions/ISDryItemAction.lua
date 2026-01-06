@@ -42,24 +42,19 @@ end
 
 function ISDryItemAction:perform()
 	self.item:setJobDelta(0.0)
-	print("[ISDryItemAction] Drying: " .. tostring(self.item.getFullType and self.item:getFullType()))
 
 	local itemContainer = self.item.getContainer and self.item:getContainer()
-	print("[ISDryItemAction] Container: " .. tostring(itemContainer and itemContainer:getType() or "main inventory"))
-	print("[ISDryItemAction] isServer: " .. tostring(isServer()) .. ", isClient: " .. tostring(isClient()))
 
 	-- In multiplayer (client mode), always use server commands for authoritative handling
 	if isClient() then
 		local itemCount = self.item:getCount()
 		local args = { itemID = self.item:getID(), outputType = self.outputType, count = itemCount }
 		sendClientCommand(self.character, "DryingRack", "dryItem", args)
-		print("[ISDryItemAction] Sent server command for item: " .. tostring(self.item:getID()))
 		
 		-- Optimistically remove the wet item locally for responsive UI
 		-- The server will authoritatively add the dried item and sync it back
 		local originalContainer = itemContainer or self.character:getInventory()
 		originalContainer:Remove(self.item)
-		print("[ISDryItemAction] Removed wet item from client container")
 	else
 		-- Single player only - handle locally
 		local originalContainer = itemContainer or self.character:getInventory()
@@ -70,7 +65,6 @@ function ISDryItemAction:perform()
 		local newItem = originalContainer:AddItem(self.outputType)
 		
 		if newItem then
-			print("[ISDryItemAction] Added to: " .. tostring(originalContainer:getType()))
 			if itemCount and itemCount > 1 then
 				newItem:setCount(itemCount)
 			end

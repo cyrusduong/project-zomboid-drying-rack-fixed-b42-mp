@@ -21,13 +21,10 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 		end
 	end
 
-	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning main inventory...")
 	processItemList(player:getInventory():getItems())
 
-	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning primary hand...")
 	local primaryHand = player:getPrimaryHandItem()
 	if primaryHand then
-		print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand: " .. tostring(primaryHand:getFullType()))
 		allItems[primaryHand] = true
 		local container = nil
 		if primaryHand.getItemContainer then
@@ -37,17 +34,13 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 			container = primaryHand:getInventory()
 		end
 		if container then
-			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand has container, scanning...")
 			processItemList(container:getItems())
 		else
-			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Primary hand has NO container")
 		end
 	end
 
-	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning secondary hand...")
 	local secondaryHand = player:getSecondaryHandItem()
 	if secondaryHand then
-		print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand: " .. tostring(secondaryHand:getFullType()))
 		allItems[secondaryHand] = true
 		local container = nil
 		if secondaryHand.getItemContainer then
@@ -57,17 +50,13 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 			container = secondaryHand:getInventory()
 		end
 		if container then
-			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand has container, scanning...")
 			processItemList(container:getItems())
 		else
-			print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Secondary hand has NO container")
 		end
 	end
 
-	print("[ISDryingRackMenu_Plants.getAllAccessibleItems] Scanning worn items...")
 	local wornItems = player:getWornItems()
 	if wornItems then
-		print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Worn items size: " .. tostring(wornItems:size()))
 		for i = 0, wornItems:size() - 1 do
 			local wornItem = wornItems:get(i)
 			if wornItem then
@@ -75,7 +64,6 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 				if item then
 					local fullType = item:getFullType()
 					allItems[item] = true
-					print("[ISDryingRackMenu_Plants.getAllAccessibleItems]   Worn item: " .. tostring(fullType))
 					local container = nil
 					if item.getItemContainer then
 						container = item:getItemContainer()
@@ -85,16 +73,13 @@ function ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 					end
 					if container then
 						local containerItems = container:getItems()
-						print("[ISDryingRackMenu_Plants.getAllAccessibleItems]     Has container with " .. tostring(containerItems:size()) .. " items")
 						processItemList(containerItems)
 						for j = 0, containerItems:size() - 1 do
 							local contItem = containerItems:get(j)
 							if contItem then
-								print("[ISDryingRackMenu_Plants.getAllAccessibleItems]       Container item: " .. tostring(contItem:getFullType()))
 							end
 						end
 					else
-						print("[ISDryingRackMenu_Plants.getAllAccessibleItems]     NO container")
 					end
 				end
 			end
@@ -111,14 +96,11 @@ function ISDryingRackMenu_Plants.getDryablePlantItems(player)
 	local allAccessibleItems = ISDryingRackMenu_Plants.getAllAccessibleItems(player)
 	local count = 0
 	for _ in pairs(allAccessibleItems) do count = count + 1 end
-	print("[ISDryingRackMenu_Plants] getDryablePlantItems - total accessible items: " .. count)
 	for item, _ in pairs(allAccessibleItems) do
 		local fullType = item:getFullType()
-		print("[ISDryingRackMenu_Plants] Checking item: " .. tostring(fullType))
 		local mappings = DryingRackMapping_Plants[fullType]
 		if mappings then
 			for _, mapping in ipairs(mappings) do
-				print("[ISDryingRackMenu_Plants] Found mapping for " .. fullType .. " -> " .. mapping.output .. " (Size: " .. mapping.size .. ")")
 				table.insert(items, {
 					item = item,
 					outputType = mapping.output,
@@ -128,7 +110,6 @@ function ISDryingRackMenu_Plants.getDryablePlantItems(player)
 			end
 		end
 	end
-	print("[ISDryingRackMenu_Plants] Returning " .. #items .. " dryable plant mapping entries")
 	return items
 end
 
@@ -136,7 +117,6 @@ end
 ---@param plantData table
 ---@param rack IsoObject
 function ISDryingRackMenu_Plants.dryPlant(player, plantData, rack)
-	print("[ISDryingRackMenu_Plants] dryPlant called for: " .. tostring(plantData.inputType))
 	if luautils.walkAdj(player, rack:getSquare()) then
 		ISTimedActionQueue.add(ISDryItemAction:new(player, plantData.item, plantData.outputType, rack, 100))
 	end
@@ -146,7 +126,6 @@ end
 ---@param compatiblePlants table
 ---@param rack IsoObject
 function ISDryingRackMenu_Plants.dryAll(player, compatiblePlants, rack)
-	print("[ISDryingRackMenu_Plants] dryAll called for " .. #compatiblePlants .. " items")
 	if not luautils.walkAdj(player, rack:getSquare(), true) then return end
 	for _, plantData in ipairs(compatiblePlants) do
 		ISTimedActionQueue.add(ISDryItemAction:new(player, plantData.item, plantData.outputType, rack, 100))
@@ -158,34 +137,25 @@ end
 ---@param worldobjects IsoObject[]
 ---@param test boolean
 function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, worldobjects, test)
-	print("[ISDryingRackMenu_Plants] ===== OnFillWorldObjectContextMenu START =====")
-	print("[ISDryingRackMenu_Plants] player: " .. tostring(player) .. ", test: " .. tostring(test))
-	print("[ISDryingRackMenu_Plants] worldobjects count: " .. (worldobjects and #worldobjects or 0))
-	print("[ISDryingRackMenu_Plants] context: " .. tostring(context))
 
 	if test and ISWorldObjectContextMenu.Test then
-		print("[ISDryingRackMenu_Plants] Returning early due to test mode")
 		return
 	end
 
 	local playerObj = getSpecificPlayer(player)
 	if not playerObj then
-		print("[ISDryingRackMenu_Plants] No player object, returning")
 		return
 	end
 
 	if playerObj:getVehicle() then
-		print("[ISDryingRackMenu_Plants] Player in vehicle, returning")
 		return
 	end
 
-	print("[ISDryingRackMenu_Plants] Scanning for plant drying racks...")
 
 	local dryingRacks = {}
 	local seenSizes = {}
 
 	if not worldobjects then
-		print("[ISDryingRackMenu_Plants] worldobjects is nil, returning")
 		return
 	end
 
@@ -201,14 +171,11 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 						local obj = sqObjs:get(j)
 						if obj then
 							local category, size = DryingRackUtils.getRackInfo(obj)
-							print("[ISDryingRackMenu_Plants] Checking obj " .. tostring(obj) .. " - category: " .. tostring(category) .. ", size: " .. tostring(size))
 							if category == "plant" then
 								if not seenSizes[size] then
-									print("[ISDryingRackMenu_Plants] Found unique plant rack size: " .. tostring(size))
 									seenSizes[size] = true
 									table.insert(dryingRacks, obj)
 								else
-									print("[ISDryingRackMenu_Plants] Skipping duplicate rack size: " .. tostring(size))
 								end
 							end
 						end
@@ -218,34 +185,27 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 		end
 	end
 
-	print("[ISDryingRackMenu_Plants] Found " .. #dryingRacks .. " unique drying racks")
 
 	if #dryingRacks == 0 then
-		print("[ISDryingRackMenu_Plants] No drying racks found, returning")
 		return
 	end
 
 	local dryablePlants = ISDryingRackMenu_Plants.getDryablePlantItems(playerObj)
-	print("[ISDryingRackMenu_Plants] Player has " .. #dryablePlants .. " dryable plant mapping entries")
 
 	if #dryablePlants == 0 then
-		print("[ISDryingRackMenu_Plants] No dryable plants in inventory, returning")
 		return
 	end
 
 	for _, rack in ipairs(dryingRacks) do
 		local category, rackSize = DryingRackUtils.getRackInfo(rack)
-		print("[ISDryingRackMenu_Plants] Processing rack - size: " .. tostring(rackSize))
 
 		local compatiblePlants = {}
 		local incompatiblePlants = {}
 		local seenInputsForThisRack = {}
 
 		for _, plant in ipairs(dryablePlants) do
-			print("[ISDryingRackMenu_Plants]   Checking plant " .. tostring(plant.inputType) .. " size: " .. tostring(plant.size) .. " vs rack size: " .. tostring(rackSize))
 			if plant.size == rackSize then
 				table.insert(compatiblePlants, plant)
-				print("[ISDryingRackMenu_Plants]   -> Compatible!")
 				seenInputsForThisRack[plant.item] = true
 			end
 		end
@@ -260,13 +220,10 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 
 				if not alreadyInIncompatible then
 					table.insert(incompatiblePlants, plant)
-					print("[ISDryingRackMenu_Plants]   -> Not compatible (wrong size)")
 				end
 			end
 		end
 
-		print("[ISDryingRackMenu_Plants] Compatible items for this rack: " .. #compatiblePlants)
-		print("[ISDryingRackMenu_Plants] Incompatible items for this rack: " .. #incompatiblePlants)
 
 		if #compatiblePlants > 0 or #incompatiblePlants > 0 then
 			local rackOption = context:addOptionOnTop("Dry Herbs on " .. rackSize:gsub("^%l", string.upper) .. " Rack", worldobjects, nil)
@@ -309,8 +266,6 @@ function ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu(player, context, w
 		end
 	end
 
-	print("[ISDryingRackMenu_Plants] ===== OnFillWorldObjectContextMenu END =====")
 end
 
 Events.OnFillWorldObjectContextMenu.Add(ISDryingRackMenu_Plants.OnFillWorldObjectContextMenu)
-print("[ISDryingRackMenu_Plants] Event handler registered")

@@ -34,7 +34,6 @@ function DryingRackUtils.getRackInfo(entity)
 		end
 	end
 
-	print("[DryingRackUtils.getRackInfo] entityFullType=" .. entityFullType .. ", displayName=" .. displayName .. ", name=" .. name .. ", spriteName=" .. spriteName)
 
 	-- Match on entity types first (most reliable) - normalizing by removing spaces
 	-- NOTE: In Build 42, world objects often lack full type metadata. We check multiple sources.
@@ -85,7 +84,6 @@ function DryingRackUtils.getRackInfo(entity)
 		-- Plant Racks
 		if s:find("vegetation_drying_01_") then
 			local prefix = s:match("vegetation_drying_01_(%d+)")
-			print("[DryingRackUtils.getRackInfo] matched plant pattern: " .. s .. " -> prefix=" .. tostring(prefix))
 			local tileNum = tonumber(prefix)
 			if tileNum then
 				-- Indices mapping for 'vegetation_drying_01' sheet based on PZWiki:
@@ -109,7 +107,6 @@ function DryingRackUtils.getRackInfo(entity)
 		-- Leather Racks (Mod-specific sprites)
 		if s:find("crafted_05_") then
 			local prefix = s:match("crafted_05_(%d+)")
-			print("[DryingRackUtils.getRackInfo] matched leather pattern: " .. s .. " -> prefix=" .. tostring(prefix))
 			local tileNum = tonumber(prefix)
 			if tileNum then
 				-- Indices mapping for 'crafted_05' sheet:
