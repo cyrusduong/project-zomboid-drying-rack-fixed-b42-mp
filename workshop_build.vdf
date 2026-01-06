@@ -57,5 +57,5 @@ Full Multiplayer support.
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_ui.png[/img]
 [img]https://raw.githubusercontent.com/cyrusduong/project-zomboid-drying-racks-fixed-b42-mp/main/media/screenshots/leather_drying_rack_action.png[/img]
  "
- 																	"changenote"		"* chore: remove excessive debug logging (151 -> 5 logs, keeping only ERROR messages)"
+ 																		"changenote"		"* chore: remove excessive debug logging to reduce server log spam,* chore: update last publish commit"
 }
